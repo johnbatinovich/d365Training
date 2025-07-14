@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamics 365 Training App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+
+        .auth-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-header h1 {
+            color: #2563eb;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .auth-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #64748b;
+        }
+
+        .auth-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .signup-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background: #047857;
+        }
+
+        .admin-btn {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .admin-btn:hover {
+            background: #6d28d9;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        .welcome-message {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            color: #1e40af;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .login-prompt {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 3rem auto;
+        }
+
+        .login-prompt h2 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 28px;
+        }
+
+        .login-prompt p {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .login-prompt .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .training-app {
+            display: none;
+        }
+
+        .training-app.show {
+            display: block;
+        }
+
+        /* Original training app styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .module-card h3 {
+            color: #2563eb;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .module-card p {
+            color: #64748b;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .lessons-list {
+            list-style: none;
+        }
+
+        .lessons-list li {
+            padding: 8px 0;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .lessons-list li:hover {
+            color: #2563eb;
+        }
+
+        .lessons-list li:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .lesson-content.active {
+            display: block;
+        }
+
+        .lesson-header {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .lesson-header h2 {
+            color: #1e293b;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .lesson-header .objective {
+            color: #64748b;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .back-button {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #4b5563;
+        }
+
+        .quiz-container {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-submit {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .quiz-submit:hover {
+            background: #047857;
+        }
+
+        .quiz-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .quiz-result.correct {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .quiz-result.incorrect {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .module-card, .lesson-content {
+                padding: 20px;
+            }
+
+            .auth-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .auth-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Header -->
+    <div class="auth-header">
+        <h1>Dynamics 365 Training</h1>
+        <div class="auth-controls">
+            <div id="guestControls" class="auth-controls">
+                <a href="auth-components/login.html" class="auth-btn login-btn">Login</a>
+                <a href="auth-components/signup.html" class="auth-btn signup-btn">Sign Up</a>
+            </div>
+            <div id="userControls" class="auth-controls" style="display: none;">
+                <div class="user-info">
+                    <span>Welcome, <span id="userName">User</span>!</span>
+                </div>
+                <a href="admin-dashboard/admin.html" id="adminBtn" class="auth-btn admin-btn" style="display: none;">Admin Dashboard</a>
+                <button onclick="logout()" class="auth-btn logout-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Message for Logged In Users -->
+    <div id="welcomeMessage" class="welcome-message" style="display: none;">
+        <span id="welcomeText">Welcome to your personalized training experience!</span>
+    </div>
+
+    <!-- Login Prompt for Guests -->
+    <div id="loginPrompt" class="login-prompt">
+        <h2>Welcome to Dynamics 365 Training</h2>
+        <p>Get comprehensive training on Microsoft Dynamics 365 Sales specifically designed for broadcast advertising professionals. Track your progress, take quizzes, and master the transition from Matrix Monarch to Dynamics 365.</p>
+        <div class="auth-buttons">
+            <a href="auth-components/login.html" class="auth-btn login-btn">Login to Continue</a>
+            <a href="auth-components/signup.html" class="auth-btn signup-btn">Create Account</a>
+        </div>
+    </div>
+
+    <!-- Main Training App (Hidden until logged in) -->
+    <div id="trainingApp" class="training-app">
+        <div class="container">
+            <div class="header">
+                <h1>Dynamics 365 Sales Training</h1>
+                <p>Comprehensive training for broadcast advertising professionals transitioning from Matrix Monarch to Microsoft Dynamics 365 Sales</p>
+            </div>
+
+            <div id="modulesList" class="modules-grid">
+                <!-- Modules will be loaded here -->
+            </div>
+
+            <div id="lessonContent" class="lesson-content">
+                <!-- Lesson content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Include authentication system -->
+    <script src="api/auth.js"></script>
+    
+    <!-- Original training app JavaScript -->
+    <script>
+        // Training modules data
+        const modules = [
+            {
+                id: 'module1',
+                title: 'Module 1: Introduction & Welcome',
+                description: 'Get started with Dynamics 365 and understand the big picture for broadcast advertising sales.',
+                lessons: [
+                    { id: 'm1l1', title: 'Welcome to Dynamics 365 Sales Training', file: 'module1_m1l1_content.md' },
+                    { id: 'm1l2', title: 'Navigating the Training App', file: 'module1_lesson2_content.md' },
+                    { id: 'm1l3', title: 'Dynamics 365 - The Big Picture for Account Executives', file: 'module1_lesson3_content.md' }
+                ]
+            },
+            {
+                id: 'module2',
+                title: 'Module 2: Personalizing Your Workspace',
+                description: 'Learn to customize Dynamics 365 to match your workflow and preferences.',
+                lessons: [
+                    { id: 'm2l1', title: 'Getting Started with Dynamics 365', file: 'module2_lesson1_content.md' },
+                    { id: 'm2l2', title: 'Customizing Your Views - Editing Columns', file: 'module2_lesson2_content.md' },
+                    { id: 'm2l3', title: 'Creating and Saving Personal Views', file: 'module2_lesson3_content.md' }
+                ]
+            },
+            {
+                id: 'module3',
+                title: 'Module 3: Mastering Lead Management',
+                description: 'Master the art of lead generation, qualification, and conversion in Dynamics 365.',
+                lessons: [
+                    { id: 'm3l1', title: 'What is a Lead in Dynamics 365?', file: 'module3_lesson1_content.md' },
+                    { id: 'm3l2', title: 'Creating New Leads', file: 'module3_lesson2_content.md' },
+                    { id: 'm3l3', title: 'Lead Qualification Process', file: 'module3_lesson3_content.md' }
+                ]
+            },
+            {
+                id: 'module4',
+                title: 'Module 4: Managing Opportunities Effectively',
+                description: 'Learn to create, track, and close opportunities in the broadcast advertising sales cycle.',
+                lessons: [
+                    { id: 'm4l1', title: 'Understanding Opportunities', file: 'module4_lesson1_content.md' },
+                    { id: 'm4l2', title: 'Creating New Opportunities', file: 'module4_lesson2_content.md' },
+                    { id: 'm4l3', title: 'Working with the Opportunity Pipeline', file: 'module4_lesson3_content.md' },
+                    { id: 'm4l4', title: 'Tracking Opportunity Progress', file: 'module4_lesson4_content.md' },
+                    { id: 'm4l5', title: 'Closing Opportunities (Won or Lost)', file: 'module4_lesson5_content.md' }
+                ]
+            },
+            {
+                id: 'module5',
+                title: 'Module 5: Integrating with Your Microsoft Ecosystem',
+                description: 'Maximize productivity by integrating Dynamics 365 with Teams, Outlook, and other Microsoft tools.',
+                lessons: [
+                    { id: 'm5l1', title: 'Dynamics 365 and Microsoft Teams Integration', file: 'module5_lesson1_content.md' },
+                    { id: 'm5l2', title: 'Outlook Integration and Email Tracking', file: 'module5_lesson2_content.md' },
+                    { id: 'm5l3', title: 'Using Power BI for Sales Analytics', file: 'module5_lesson3_content.md' },
+                    { id: 'm5l4', title: 'Mobile Access and Productivity', file: 'module5_lesson4_content.md' }
+                ]
+            },
+            {
+                id: 'module6',
+                title: 'Module 6: Capstone Module: A Day in the Life',
+                description: 'Apply all learned skills in a comprehensive broadcast ad sales scenario.',
+                lessons: [
+                    { id: 'm6l1', title: 'A Day in the Life (Broadcast Ad Sales Scenario)', file: 'module6_capstone_scenario.md' }
+                ]
+            },
+            {
+                id: 'module7',
+                title: 'Module 7: Resources & Next Steps',
+                description: 'Access additional resources and plan your continuing education journey.',
+                lessons: [
+                    { id: 'm7l1', title: 'Additional Learning Resources and Next Steps', file: 'module7_resources_next_steps.md' }
+                ]
+            }
+        ];
+
+        // Authentication state management
+        function checkAuthState() {
+            const isLoggedIn = window.authSystem.isLoggedIn();
+            const currentUser = window.authSystem.getCurrentUser();
+            
+            if (isLoggedIn && currentUser) {
+                // Show logged in state
+                document.getElementById('guestControls').style.display = 'none';
+                document.getElementById('userControls').style.display = 'flex';
+                document.getElementById('userName').textContent = `${currentUser.first_name} ${currentUser.last_name}`;
+                document.getElementById('loginPrompt').style.display = 'none';
+                document.getElementById('trainingApp').classList.add('show');
+                document.getElementById('welcomeMessage').style.display = 'block';
+                document.getElementById('welcomeText').textContent = 
+                    `Welcome back, ${currentUser.first_name}! Continue your Dynamics 365 training journey.`;
+                
+                // Show admin button if user is admin
+                if (window.authSystem.isAdmin()) {
+                    document.getElementById('adminBtn').style.display = 'inline-block';
+                }
+                
+                // Load training modules
+                loadModules();
+            } else {
+                // Show guest state
+                document.getElementById('guestControls').style.display = 'flex';
+                document.getElementById('userControls').style.display = 'none';
+                document.getElementById('loginPrompt').style.display = 'block';
+                document.getElementById('trainingApp').classList.remove('show');
+                document.getElementById('welcomeMessage').style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            window.authSystem.logout();
+            checkAuthState();
+        }
+
+        // Load training modules
+        function loadModules() {
+            const modulesList = document.getElementById('modulesList');
+            modulesList.innerHTML = modules.map(module => `
+                <div class="module-card" onclick="showModule('${module.id}')">
+                    <h3>${module.title}</h3>
+                    <p>${module.description}</p>
+                    <ul class="lessons-list">
+                        ${module.lessons.map(lesson => `
+                            <li onclick="event.stopPropagation(); showLesson('${module.id}', '${lesson.id}')">${lesson.title}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        // Show module lessons
+        function showModule(moduleId) {
+            const module = modules.find(m => m.id === moduleId);
+            if (!module) return;
+            
+            // For now, just show the first lesson
+            if (module.lessons.length > 0) {
+                showLesson(moduleId, module.lessons[0].id);
+            }
+        }
+
+        // Show lesson content
+        async function showLesson(moduleId, lessonId) {
+            const module = modules.find(m => m.id === moduleId);
+            const lesson = module?.lessons.find(l => l.id === lessonId);
+            
+            if (!lesson) return;
+            
+            const lessonContent = document.getElementById('lessonContent');
+            const modulesList = document.getElementById('modulesList');
+            
+            try {
+                const response = await fetch(`content/${lesson.file}`);
+                const content = await response.text();
+                
+                lessonContent.innerHTML = `
+                    <button class="back-button" onclick="showModules()">← Back to Modules</button>
+                    <div class="lesson-header">
+                        <h2>${lesson.title}</h2>
+                        <div class="objective">Module ${moduleId.replace('module', '')} - ${module.title}</div>
+                    </div>
+                    <div class="lesson-body">
+                        ${markdownToHtml(content)}
+                    </div>
+                    ${createQuizSection(moduleId)}
+                `;
+                
+                modulesList.style.display = 'none';
+                lessonContent.classList.add('active');
+                
+            } catch (error) {
+                console.error('Error loading lesson:', error);
+                lessonContent.innerHTML = `
+                    <button class="back-button" onclick="showModules()">← Back to Modules</button>
+                    <div class="lesson-header">
+                        <h2>Content Loading Error</h2>
+                        <div class="objective">Error loading lesson content. Please check the file path and ensure the server is running.</div>
+                    </div>
+                    <p>Module: ${moduleId}, Lesson: ${lessonId}</p>
+                `;
+                modulesList.style.display = 'none';
+                lessonContent.classList.add('active');
+            }
+        }
+
+        // Show modules list
+        function showModules() {
+            document.getElementById('modulesList').style.display = 'grid';
+            document.getElementById('lessonContent').classList.remove('active');
+        }
+
+        // Create quiz section
+        function createQuizSection(moduleId) {
+            return `
+                <div class="quiz-container">
+                    <h3>Module Quiz</h3>
+                    <p>Test your knowledge of this module with our interactive quiz.</p>
+                    <button onclick="loadQuiz('${moduleId}')" class="quiz-submit">Start Quiz</button>
+                    <div id="quizContent-${moduleId}"></div>
+                </div>
+            `;
+        }
+
+        // Load quiz for module
+        async function loadQuiz(moduleId) {
+            try {
+                const response = await fetch(`quizzes/${moduleId}_quiz.json`);
+                const quizData = await response.json();
+                displayQuiz(moduleId, quizData);
+            } catch (error) {
+                console.error('Error loading quiz:', error);
+                document.getElementById(`quizContent-${moduleId}`).innerHTML = 
+                    '<p style="color: #dc2626;">Quiz not available for this module.</p>';
+            }
+        }
+
+        // Display quiz
+        function displayQuiz(moduleId, quizData) {
+            const quizContainer = document.getElementById(`quizContent-${moduleId}`);
+            let currentQuestion = 0;
+            const userAnswers = [];
+
+            function showQuestion() {
+                const question = quizData.questions[currentQuestion];
+                quizContainer.innerHTML = `
+                    <div class="quiz-question">
+                        Question ${currentQuestion + 1} of ${quizData.questions.length}: ${question.question}
+                    </div>
+                    <ul class="quiz-options">
+                        ${question.options.map((option, index) => `
+                            <li>
+                                <input type="radio" name="q${currentQuestion}" value="${index}" id="q${currentQuestion}_${index}">
+                                <label for="q${currentQuestion}_${index}">${option}</label>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button onclick="nextQuestion()" class="quiz-submit">
+                        ${currentQuestion < quizData.questions.length - 1 ? 'Next Question' : 'Submit Quiz'}
+                    </button>
+                    <div id="questionResult-${currentQuestion}"></div>
+                `;
+            }
+
+            window.nextQuestion = function() {
+                const selectedAnswer = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+                if (!selectedAnswer) {
+                    alert('Please select an answer before continuing.');
+                    return;
+                }
+
+                const answerIndex = parseInt(selectedAnswer.value);
+                const question = quizData.questions[currentQuestion];
+                const isCorrect = answerIndex === question.correct;
+                
+                userAnswers.push({
+                    questionIndex: currentQuestion,
+                    selectedAnswer: answerIndex,
+                    correct: isCorrect
+                });
+
+                if (currentQuestion < quizData.questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    showResults();
+                }
+            };
+
+            function showResults() {
+                const score = userAnswers.filter(a => a.correct).length;
+                const percentage = Math.round((score / quizData.questions.length) * 100);
+                const passed = percentage >= 70;
+
+                // Save quiz result
+                try {
+                    window.authSystem.saveQuizResult(moduleId, score, quizData.questions.length, userAnswers);
+                } catch (error) {
+                    console.error('Error saving quiz result:', error);
+                }
+
+                quizContainer.innerHTML = `
+                    <div class="quiz-result ${passed ? 'correct' : 'incorrect'}">
+                        <h4>Quiz Complete!</h4>
+                        <p>Your Score: ${score}/${quizData.questions.length} (${percentage}%)</p>
+                        <p>${passed ? 'Congratulations! You passed!' : 'You need 70% to pass. Please review the material and try again.'}</p>
+                        ${!passed ? '<button onclick="loadQuiz(\'' + moduleId + '\')" class="quiz-submit">Retake Quiz</button>' : ''}
+                    </div>
+                `;
+            }
+
+            showQuestion();
+        }
+
+        // Simple markdown to HTML converter
+        function markdownToHtml(markdown) {
+            return markdown
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+                .replace(/\*(.*)\*/gim, '<em>$1</em>')
+                .replace(/!\[([^\]]*)\]\(([^\)]*)\)/gim, '<img alt="$1" src="$2" style="max-width: 100%; height: auto; margin: 20px 0;">')
+                .replace(/\[([^\]]*)\]\(([^\)]*)\)/gim, '<a href="$2">$1</a>')
+                .replace(/\n\n/gim, '</p><p>')
+                .replace(/^(.*)$/gim, '<p>$1</p>')
+                .replace(/<p><\/p>/gim, '')
+                .replace(/<p>(<h[1-6]>.*<\/h[1-6]>)<\/p>/gim, '$1')
+                .replace(/<p>(<img.*>)<\/p>/gim, '$1');
+        }
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthState();
+        });
+    </script>
+</body>
+</html>
+
