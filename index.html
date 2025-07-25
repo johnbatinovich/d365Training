@@ -530,24 +530,23 @@
                     <span class="user-name" id="userName"></span>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
+            <div class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Master Dynamics 365 for Broadcast Advertising</h1>
+                    <p>Transform your sales process with Microsoft's powerful CRM platform. Learn to leverage advanced features, integrate with your existing workflow, and drive better results for your broadcast advertising business.</p>
+                    <div class="cta-buttons" id="cta-buttons">
+                        <a href="#" class="cta-btn cta-primary" onclick="startFreeTraining()">Start Free Training</a>
+                        <a href="#" class="cta-btn cta-secondary" onclick="showLogin()">Login to Continue</a>
+                    </div>
+                    <div class="welcome-message" id="welcome-message" style="display: none;">
+                        <h2 style="color: white; margin-bottom: 15px;">Welcome back! 👋</h2>
+                        <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Continue your training journey with our enhanced interactive lessons.</p>
+                        <a href="enhanced-lessons-index.html" class="cta-btn cta-primary">View Enhanced Lessons</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <h1>Master Dynamics 365 for Broadcast Advertising</h1>
-            <p>Transform your sales process with Microsoft's powerful CRM platform. Learn to leverage advanced features, integrate with your existing workflow, and drive better results for your broadcast advertising business.</p>
-            <div class="cta-buttons">
-                <a href="auth-components/signup.html" class="cta-btn cta-primary">Start Free Training</a>
-                <a href="auth-components/login.html" class="cta-btn cta-secondary">Login to Continue</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="modules-section">
-        <div class="container">
-            <h2 class="section-title">Training Modules</h2>
+        </div>2 class="section-title">Training Modules</h2>
             <div class="modules-grid">
                 <div class="module-card" onclick="toggleModule('module1')">
                     <h3>Module 1: Introduction to Dynamics 365</h3>
@@ -915,6 +914,58 @@
         function selectPollOption(optionIndex) {
             // Implementation for poll selection
             console.log('Poll option selected:', optionIndex);
+        }
+
+        // Login state management
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userName = localStorage.getItem('userName') || 'Demo User';
+            
+            if (isLoggedIn) {
+                // Hide login buttons and show welcome message
+                const ctaButtons = document.getElementById('cta-buttons');
+                const welcomeMessage = document.getElementById('welcome-message');
+                const userInfo = document.getElementById('userInfo');
+                const userNameEl = document.getElementById('userName');
+                
+                if (ctaButtons) ctaButtons.style.display = 'none';
+                if (welcomeMessage) welcomeMessage.style.display = 'block';
+                if (userInfo) userInfo.style.display = 'flex';
+                if (userNameEl) userNameEl.textContent = `Welcome, ${userName}`;
+            } else {
+                // Show login buttons and hide welcome message
+                const ctaButtons = document.getElementById('cta-buttons');
+                const welcomeMessage = document.getElementById('welcome-message');
+                const userInfo = document.getElementById('userInfo');
+                
+                if (ctaButtons) ctaButtons.style.display = 'flex';
+                if (welcomeMessage) welcomeMessage.style.display = 'none';
+                if (userInfo) userInfo.style.display = 'none';
+            }
+        }
+
+        function startFreeTraining() {
+            // Set demo login
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', 'Demo User');
+            checkLoginStatus();
+        }
+
+        function showLogin() {
+            // For demo purposes, just log in as demo user
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', 'Demo User');
+            checkLoginStatus();
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userName');
+            checkLoginStatus();
         }
     </script>
 </body>
