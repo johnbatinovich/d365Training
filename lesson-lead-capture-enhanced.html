@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Capture - D365 Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .lesson-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .lesson-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .progress-card {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-left: 5px solid #4caf50;
+        }
+
+        .progress-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            color: #388e3c;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .lead-sources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .lead-source {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .lead-source:hover {
+            border-color: #2196f3;
+            transform: translateY(-3px);
+        }
+
+        .lead-source-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .lead-source-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+
+        .lead-source-desc {
+            color: #1565c0;
+            font-size: 0.9rem;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .workflow-step {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #ff9800;
+            position: relative;
+        }
+
+        .workflow-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #ff9800;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .workflow-title {
+            color: #e65100;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .workflow-desc {
+            color: #bf360c;
+            font-size: 0.9rem;
+        }
+
+        .best-practices {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #9c27b0;
+        }
+
+        .best-practices h4 {
+            color: #4a148c;
+            margin-bottom: 15px;
+        }
+
+        .best-practices ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .best-practices li {
+            color: #6a1b9a;
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .best-practices li::before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+
+        .complete-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .complete-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .completed {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9) !important;
+            border-left: 5px solid #4caf50 !important;
+        }
+
+        .completed .section-number {
+            background: linear-gradient(135deg, #4caf50, #45a049) !important;
+        }
+
+        .completed .section-number::after {
+            content: "✓";
+            position: absolute;
+            font-size: 0.8rem;
+        }
+
+        /* Quiz Modal Styles */
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quiz-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-options label {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .quiz-options label:hover {
+            background: #f0f0f0;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .quiz-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .quiz-btn:hover {
+            background: #45a049;
+        }
+
+        .quiz-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Certificate Modal Styles */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .certificate-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .certificate {
+            border: 3px solid #4caf50;
+            border-radius: 10px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .lead-sources {
+                grid-template-columns: 1fr;
+            }
+            
+            .workflow-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Dynamics 365 Training</div>
+            <a href="index.html" class="back-btn">← Back to Training Home</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="lesson-header">
+            <h1 class="lesson-title">Lead Capture</h1>
+            <p class="lesson-subtitle">Module: Lead Management Mastery</p>
+        </div>
+
+        <div class="progress-card">
+            <div class="progress-title">Lesson Progress</div>
+            <div class="progress-text" id="progress-text">0/4 Sections Complete</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <p style="margin-top: 15px; color: #388e3c;">Complete all sections and pass their quizzes to earn your lesson certificate.</p>
+        </div>
+
+        <!-- Section 1: Lead Sources -->
+        <div class="section" id="section-1">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Understanding Lead Sources</h2>
+            </div>
+            <div class="section-content">
+                <p>In broadcast advertising, leads can come from various sources. Understanding and tracking these sources is crucial for optimizing your marketing efforts and improving conversion rates. Dynamics 365 provides comprehensive tools to capture and categorize leads from multiple channels.</p>
+                
+                <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Primary Lead Sources:</h3>
+                
+                <div class="lead-sources">
+                    <div class="lead-source">
+                        <div class="lead-source-icon">🌐</div>
+                        <div class="lead-source-title">Website Inquiries</div>
+                        <div class="lead-source-desc">Contact forms, chat widgets, and landing pages</div>
+                    </div>
+                    <div class="lead-source">
+                        <div class="lead-source-icon">📞</div>
+                        <div class="lead-source-title">Phone Calls</div>
+                        <div class="lead-source-desc">Inbound calls from potential advertisers</div>
+                    </div>
+                    <div class="lead-source">
+                        <div class="lead-source-icon">📧</div>
+                        <div class="lead-source-title">Email Campaigns</div>
+                        <div class="lead-source-desc">Marketing emails and newsletters</div>
+                    </div>
+                    <div class="lead-source">
+                        <div class="lead-source-icon">🤝</div>
+                        <div class="lead-source-title">Referrals</div>
+                        <div class="lead-source-desc">Existing client recommendations</div>
+                    </div>
+                    <div class="lead-source">
+                        <div class="lead-source-icon">📱</div>
+                        <div class="lead-source-title">Social Media</div>
+                        <div class="lead-source-desc">LinkedIn, Facebook, Twitter interactions</div>
+                    </div>
+                    <div class="lead-source">
+                        <div class="lead-source-icon">🎪</div>
+                        <div class="lead-source-title">Trade Shows</div>
+                        <div class="lead-source-desc">Industry events and conferences</div>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px;">Each lead source requires different capture methods and follow-up strategies. Dynamics 365 allows you to track the effectiveness of each source and allocate resources accordingly.</p>
+            </div>
+            <button class="complete-btn" onclick="completeSection(1)">Mark Section Complete</button>
+        </div>
+
+        <!-- Section 2: Lead Capture Process -->
+        <div class="section" id="section-2">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Lead Capture Process</h2>
+            </div>
+            <div class="section-content">
+                <p>A systematic lead capture process ensures no potential opportunities are missed and all leads receive appropriate follow-up. Here's the recommended workflow for broadcast advertising professionals.</p>
+                
+                <div class="workflow-steps">
+                    <div class="workflow-step" data-step="1">
+                        <div class="workflow-title">Initial Contact</div>
+                        <div class="workflow-desc">Capture basic contact information, company details, and initial interest area</div>
+                    </div>
+                    <div class="workflow-step" data-step="2">
+                        <div class="workflow-title">Qualification</div>
+                        <div class="workflow-desc">Assess budget, timeline, decision-making authority, and specific needs</div>
+                    </div>
+                    <div class="workflow-step" data-step="3">
+                        <div class="workflow-title">Categorization</div>
+                        <div class="workflow-desc">Assign lead score, priority level, and appropriate sales representative</div>
+                    </div>
+                    <div class="workflow-step" data-step="4">
+                        <div class="workflow-title">Follow-up</div>
+                        <div class="workflow-desc">Schedule immediate response and ongoing nurturing activities</div>
+                    </div>
+                </div>
+                
+                <div class="best-practices">
+                    <h4>🎯 Best Practices for Lead Capture</h4>
+                    <ul>
+                        <li>Respond to new leads within 5 minutes when possible</li>
+                        <li>Capture complete contact information including mobile numbers</li>
+                        <li>Record the lead source and any campaign details</li>
+                        <li>Ask qualifying questions about budget and timeline</li>
+                        <li>Set clear expectations for next steps</li>
+                        <li>Use lead scoring to prioritize follow-up efforts</li>
+                    </ul>
+                </div>
+            </div>
+            <button class="complete-btn" onclick="completeSection(2)">Mark Section Complete</button>
+        </div>
+
+        <!-- Section 3: Dynamics 365 Lead Forms -->
+        <div class="section" id="section-3">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Creating Effective Lead Forms</h2>
+            </div>
+            <div class="section-content">
+                <p>Dynamics 365 provides powerful form-building capabilities to capture leads efficiently. Well-designed forms balance information gathering with user experience to maximize conversion rates.</p>
+                
+                <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Essential Form Fields:</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div style="background: linear-gradient(135deg, #e8f5e8, #c8e6c9); padding: 20px; border-radius: 10px; border-left: 4px solid #4caf50;">
+                        <h4 style="color: #2e7d32; margin-bottom: 10px;">📋 Required Fields</h4>
+                        <ul style="color: #388e3c; list-style: none; padding: 0;">
+                            <li>• Full Name</li>
+                            <li>• Company Name</li>
+                            <li>• Email Address</li>
+                            <li>• Phone Number</li>
+                            <li>• Industry/Business Type</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 10px; border-left: 4px solid #2196f3;">
+                        <h4 style="color: #1976d2; margin-bottom: 10px;">🎯 Qualifying Fields</h4>
+                        <ul style="color: #1565c0; list-style: none; padding: 0;">
+                            <li>• Advertising Budget Range</li>
+                            <li>• Campaign Timeline</li>
+                            <li>• Target Audience</li>
+                            <li>• Previous Advertising Experience</li>
+                            <li>• Specific Interests/Needs</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Form Optimization Tips:</h3>
+                <ul style="color: #555; list-style: none; padding: 0;">
+                    <li style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #007bff;">
+                        <strong>Keep it concise:</strong> Limit forms to 5-7 fields maximum for better conversion
+                    </li>
+                    <li style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #28a745;">
+                        <strong>Use progressive profiling:</strong> Gather additional information in subsequent interactions
+                    </li>
+                    <li style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #ffc107;">
+                        <strong>Mobile optimization:</strong> Ensure forms work perfectly on all devices
+                    </li>
+                    <li style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #dc3545;">
+                        <strong>Clear value proposition:</strong> Explain what the prospect will receive
+                    </li>
+                </ul>
+            </div>
+            <button class="complete-btn" onclick="completeSection(3)">Mark Section Complete</button>
+        </div>
+
+        <!-- Section 4: Lead Scoring & Prioritization -->
+        <div class="section" id="section-4">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Lead Scoring & Prioritization</h2>
+            </div>
+            <div class="section-content">
+                <p>Not all leads are created equal. Dynamics 365's lead scoring system helps you prioritize your efforts on the most promising prospects, improving conversion rates and sales efficiency.</p>
+                
+                <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Scoring Criteria for Broadcast Advertising:</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 20px; border-radius: 10px; border-left: 4px solid #ff9800;">
+                        <h4 style="color: #e65100; margin-bottom: 10px;">💰 Budget Indicators</h4>
+                        <ul style="color: #bf360c; list-style: none; padding: 0; font-size: 0.9rem;">
+                            <li>• High budget (>$50k): +25 points</li>
+                            <li>• Medium budget ($10k-$50k): +15 points</li>
+                            <li>• Low budget (<$10k): +5 points</li>
+                            <li>• Budget not disclosed: 0 points</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 20px; border-radius: 10px; border-left: 4px solid #9c27b0;">
+                        <h4 style="color: #4a148c; margin-bottom: 10px;">⏰ Timeline Urgency</h4>
+                        <ul style="color: #6a1b9a; list-style: none; padding: 0; font-size: 0.9rem;">
+                            <li>• Immediate need: +20 points</li>
+                            <li>• Within 30 days: +15 points</li>
+                            <li>• Within 90 days: +10 points</li>
+                            <li>• Future planning: +5 points</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #e8f5e8, #c8e6c9); padding: 20px; border-radius: 10px; border-left: 4px solid #4caf50;">
+                        <h4 style="color: #2e7d32; margin-bottom: 10px;">🎯 Company Profile</h4>
+                        <ul style="color: #388e3c; list-style: none; padding: 0; font-size: 0.9rem;">
+                            <li>• Fortune 500 company: +20 points</li>
+                            <li>• Established business: +15 points</li>
+                            <li>• Growing company: +10 points</li>
+                            <li>• Startup/new business: +5 points</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 10px; border-left: 4px solid #2196f3;">
+                        <h4 style="color: #1976d2; margin-bottom: 10px;">📞 Engagement Level</h4>
+                        <ul style="color: #1565c0; list-style: none; padding: 0; font-size: 0.9rem;">
+                            <li>• Requested demo: +15 points</li>
+                            <li>• Downloaded content: +10 points</li>
+                            <li>• Attended webinar: +10 points</li>
+                            <li>• Email engagement: +5 points</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fff8e1, #ffecb3); padding: 20px; border-radius: 10px; border-left: 4px solid #ffa000; margin-top: 25px;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">🚀 Priority Action Plan</h4>
+                    <ul style="color: #bf360c; list-style: none; padding: 0;">
+                        <li style="margin: 8px 0;"><strong>Hot Leads (80+ points):</strong> Contact within 1 hour, assign to senior sales rep</li>
+                        <li style="margin: 8px 0;"><strong>Warm Leads (50-79 points):</strong> Contact within 4 hours, standard follow-up</li>
+                        <li style="margin: 8px 0;"><strong>Cold Leads (20-49 points):</strong> Contact within 24 hours, nurture campaign</li>
+                        <li style="margin: 8px 0;"><strong>Low Priority (<20 points):</strong> Add to newsletter, periodic check-ins</li>
+                    </ul>
+                </div>
+            </div>
+            <button class="complete-btn" onclick="completeSection(4)">Mark Section Complete</button>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quiz-modal">
+        <div class="quiz-content">
+            <div class="quiz-header">
+                <h2 id="quiz-title">Section Quiz</h2>
+                <p>Answer the following questions to complete this section.</p>
+            </div>
+            <div id="quiz-questions"></div>
+            <div class="quiz-buttons">
+                <button class="quiz-btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="quiz-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div class="certificate-modal" id="certificate-modal">
+        <div class="certificate-content">
+            <div class="certificate">
+                <h2 style="color: #4caf50; margin-bottom: 20px;">🏆 Congratulations!</h2>
+                <h3>Certificate of Completion</h3>
+                <p style="margin: 20px 0;">This certifies that you have successfully completed</p>
+                <h4 style="color: #2c3e50;">Lead Capture</h4>
+                <p style="margin: 20px 0;">Module: Lead Management Mastery</p>
+                <p style="color: #666;">Completed on: <span id="completion-date"></span></p>
+            </div>
+            <div style="margin-top: 30px;">
+                <button class="quiz-btn" onclick="downloadCertificate()" style="margin-right: 10px;">Download Certificate</button>
+                <button class="quiz-btn" onclick="closeCertificate()">Continue Learning</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedSections = 0;
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        const quizzes = {
+            1: {
+                title: "Lead Sources Quiz",
+                questions: [
+                    {
+                        question: "Which lead source typically has the highest conversion rate in broadcast advertising?",
+                        options: ["Website inquiries", "Cold calls", "Referrals", "Trade shows"],
+                        correct: 2
+                    },
+                    {
+                        question: "Social media is an effective lead source for broadcast advertising.",
+                        options: ["True", "False"],
+                        correct: 0
+                    },
+                    {
+                        question: "How many primary lead sources were mentioned in this section?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2
+                    }
+                ]
+            },
+            2: {
+                title: "Lead Capture Process Quiz",
+                questions: [
+                    {
+                        question: "What is the recommended response time for new leads?",
+                        options: ["Within 1 hour", "Within 5 minutes", "Within 24 hours", "Within 1 week"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which step comes after Initial Contact in the lead capture process?",
+                        options: ["Follow-up", "Qualification", "Categorization", "Conversion"],
+                        correct: 1
+                    },
+                    {
+                        question: "Lead scoring helps prioritize follow-up efforts.",
+                        options: ["True", "False"],
+                        correct: 0
+                    }
+                ]
+            },
+            3: {
+                title: "Lead Forms Quiz",
+                questions: [
+                    {
+                        question: "What is the recommended maximum number of fields for lead forms?",
+                        options: ["3-4", "5-7", "8-10", "10-12"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which is NOT mentioned as an essential required field?",
+                        options: ["Full Name", "Company Name", "Social Security Number", "Email Address"],
+                        correct: 2
+                    },
+                    {
+                        question: "Progressive profiling means gathering additional information in subsequent interactions.",
+                        options: ["True", "False"],
+                        correct: 0
+                    }
+                ]
+            },
+            4: {
+                title: "Lead Scoring Quiz",
+                questions: [
+                    {
+                        question: "How many points should a high budget lead (>$50k) receive?",
+                        options: ["15 points", "20 points", "25 points", "30 points"],
+                        correct: 2
+                    },
+                    {
+                        question: "What defines a 'Hot Lead' in the scoring system?",
+                        options: ["50+ points", "60+ points", "70+ points", "80+ points"],
+                        correct: 3
+                    },
+                    {
+                        question: "Hot leads should be contacted within 1 hour.",
+                        options: ["True", "False"],
+                        correct: 0
+                    }
+                ]
+            }
+        };
+
+        function updateProgress() {
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            
+            progressText.textContent = `${completedSections}/4 Sections Complete`;
+            progressFill.style.width = `${(completedSections / 4) * 100}%`;
+        }
+
+        function completeSection(sectionNumber) {
+            startQuiz(sectionNumber);
+        }
+
+        function startQuiz(sectionNumber) {
+            currentQuiz = quizzes[sectionNumber];
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            
+            document.getElementById('quiz-title').textContent = currentQuiz.title;
+            document.getElementById('quiz-modal').style.display = 'flex';
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            const questionsContainer = document.getElementById('quiz-questions');
+            
+            let optionsHtml = '';
+            question.options.forEach((option, index) => {
+                optionsHtml += `
+                    <li>
+                        <label>
+                            <input type="radio" name="quiz-option" value="${index}" ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                            ${option}
+                        </label>
+                    </li>
+                `;
+            });
+            
+            questionsContainer.innerHTML = `
+                <div class="quiz-question">
+                    Question ${currentQuestionIndex + 1} of ${currentQuiz.questions.length}: ${question.question}
+                </div>
+                <ul class="quiz-options">
+                    ${optionsHtml}
+                </ul>
+            `;
+            
+            updateQuizButtons();
+        }
+
+        function updateQuizButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
+                nextBtn.textContent = 'Submit Quiz';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+            }
+            
+            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
+                submitQuiz();
+            } else {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            let correctAnswers = 0;
+            currentQuiz.questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    correctAnswers++;
+                }
+            });
+            
+            const score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+            const passed = score >= 80;
+            
+            if (passed) {
+                const sectionNumber = Object.keys(quizzes).find(key => quizzes[key] === currentQuiz);
+                markSectionCompleted(parseInt(sectionNumber));
+                
+                document.getElementById('quiz-modal').style.display = 'none';
+                
+                if (completedSections === 4) {
+                    showCertificate();
+                }
+            } else {
+                alert(`You scored ${score}%. You need 80% or higher to pass. Please review the material and try again.`);
+                document.getElementById('quiz-modal').style.display = 'none';
+            }
+        }
+
+        function markSectionCompleted(sectionNumber) {
+            const section = document.getElementById(`section-${sectionNumber}`);
+            section.classList.add('completed');
+            
+            const button = section.querySelector('.complete-btn');
+            button.textContent = 'Section Completed ✓';
+            button.disabled = true;
+            
+            completedSections++;
+            updateProgress();
+        }
+
+        function showCertificate() {
+            document.getElementById('completion-date').textContent = new Date().toLocaleDateString();
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+
+        function downloadCertificate() {
+            alert('Certificate download functionality would be implemented here.');
+        }
+
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>
+

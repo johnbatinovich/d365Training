@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Overview - D365 Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .lesson-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .lesson-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .progress-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-left: 5px solid #2196f3;
+        }
+
+        .progress-title {
+            color: #1976d2;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #2196f3;
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits-list li {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+            position: relative;
+        }
+
+        .benefits-list li::before {
+            content: "✓";
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .interface-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .interface-element {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .interface-element:hover {
+            border-color: #2196f3;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+        }
+
+        .complete-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .complete-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .completed {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9) !important;
+            border-left: 5px solid #4caf50 !important;
+        }
+
+        .completed .section-number {
+            background: linear-gradient(135deg, #4caf50, #45a049) !important;
+        }
+
+        .completed .section-number::after {
+            content: "✓";
+            position: absolute;
+            font-size: 0.8rem;
+        }
+
+        /* Quiz Modal Styles */
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quiz-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-options label {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .quiz-options label:hover {
+            background: #f0f0f0;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .quiz-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .quiz-btn:hover {
+            background: #1976d2;
+        }
+
+        .quiz-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Certificate Modal Styles */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .certificate-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .certificate {
+            border: 3px solid #2196f3;
+            border-radius: 10px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .interface-elements {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Dynamics 365 Training</div>
+            <a href="index.html" class="back-btn">← Back to Training Home</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="lesson-header">
+            <h1 class="lesson-title">System Overview</h1>
+            <p class="lesson-subtitle">Module: Introduction to Dynamics 365</p>
+        </div>
+
+        <div class="progress-card">
+            <div class="progress-title">Lesson Progress</div>
+            <div class="progress-text" id="progress-text">0/4 Sections Complete</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <p style="margin-top: 15px; color: #1565c0;">Complete all sections and pass their quizzes to earn your lesson certificate.</p>
+        </div>
+
+        <!-- Section 1: Platform Overview -->
+        <div class="section" id="section-1">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Dynamics 365 Platform Overview</h2>
+            </div>
+            <div class="section-content">
+                <p>Microsoft Dynamics 365 is a comprehensive cloud-based business application platform that combines CRM (Customer Relationship Management) and ERP (Enterprise Resource Planning) capabilities. For broadcast advertising professionals, it serves as a powerful sales automation and customer management solution.</p>
+                
+                <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Key Platform Benefits:</h3>
+                <ul class="benefits-list">
+                    <li><strong>Cloud-based accessibility</strong> - Access from anywhere, anytime</li>
+                    <li><strong>Integrated ecosystem</strong> - Seamless connection with Microsoft Office 365</li>
+                    <li><strong>Scalable architecture</strong> - Grows with your business needs</li>
+                    <li><strong>Industry-specific features</strong> - Tailored for media and advertising workflows</li>
+                    <li><strong>Real-time analytics</strong> - Data-driven decision making</li>
+                    <li><strong>Mobile optimization</strong> - Full functionality on smartphones and tablets</li>
+                </ul>
+                
+                <p style="margin-top: 20px;">The platform is designed to streamline your entire sales process, from initial lead capture through contract execution and ongoing customer relationship management.</p>
+            </div>
+            <button class="complete-btn" onclick="completeSection(1)">Mark Section Complete</button>
+        </div>
+
+        <!-- Section 2: Core Components -->
+        <div class="section" id="section-2">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Core System Components</h2>
+            </div>
+            <div class="section-content">
+                <p>Dynamics 365 consists of several interconnected modules that work together to provide a complete business solution. Understanding these components is essential for effective system utilization.</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <div class="feature-title">Sales Hub</div>
+                        <div class="feature-desc">Manage leads, opportunities, and customer relationships</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Analytics</div>
+                        <div class="feature-desc">Real-time dashboards and performance insights</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📧</div>
+                        <div class="feature-title">Marketing</div>
+                        <div class="feature-desc">Campaign management and lead nurturing</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">Customer Service</div>
+                        <div class="feature-desc">Support ticket management and knowledge base</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔧</div>
+                        <div class="feature-title">Customization</div>
+                        <div class="feature-desc">Tailor the system to your specific workflows</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔗</div>
+                        <div class="feature-title">Integration</div>
+                        <div class="feature-desc">Connect with existing business applications</div>
+                    </div>
+                </div>
+            </div>
+            <button class="complete-btn" onclick="completeSection(2)">Mark Section Complete</button>
+        </div>
+
+        <!-- Section 3: Navigation & UI -->
+        <div class="section" id="section-3">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Navigation & User Interface</h2>
+            </div>
+            <div class="section-content">
+                <p>The Dynamics 365 interface is designed for intuitive navigation and efficient workflow management. Understanding the layout and navigation patterns will significantly improve your productivity.</p>
+                
+                <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Main Interface Elements:</h3>
+                
+                <div class="interface-elements">
+                    <div class="interface-element">
+                        <div style="font-size: 1.5rem; margin-bottom: 10px;">🏠</div>
+                        <strong>Home Dashboard</strong>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Personalized view of key metrics and activities</p>
+                    </div>
+                    <div class="interface-element">
+                        <div style="font-size: 1.5rem; margin-bottom: 10px;">📋</div>
+                        <strong>Navigation Menu</strong>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Access to all system modules and features</p>
+                    </div>
+                    <div class="interface-element">
+                        <div style="font-size: 1.5rem; margin-bottom: 10px;">🔍</div>
+                        <strong>Global Search</strong>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Universal search across all data types</p>
+                    </div>
+                    <div class="interface-element">
+                        <div style="font-size: 1.5rem; margin-bottom: 10px;">⚙️</div>
+                        <strong>Settings</strong>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">User preferences and system configuration</p>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px;">The mobile interface provides responsive design that adapts to any screen size, with touch-optimized controls and offline capability for field sales activities.</p>
+            </div>
+            <button class="complete-btn" onclick="completeSection(3)">Mark Section Complete</button>
+        </div>
+
+        <!-- Section 4: Data Management -->
+        <div class="section" id="section-4">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Data Management & Security</h2>
+            </div>
+            <div class="section-content">
+                <p>Effective data management is crucial for maintaining accurate customer information and ensuring system performance. Dynamics 365 provides robust tools for data organization, security, and compliance.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 20px; border-radius: 10px; border-left: 4px solid #ff9800;">
+                        <h4 style="color: #e65100; margin-bottom: 10px;">🗂️ Entity Relationships</h4>
+                        <ul style="color: #bf360c; list-style: none; padding: 0;">
+                            <li>• Accounts (Companies/Organizations)</li>
+                            <li>• Contacts (Individual People)</li>
+                            <li>• Leads (Potential Customers)</li>
+                            <li>• Opportunities (Sales Deals)</li>
+                            <li>• Activities (Tasks, Appointments, Calls)</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 20px; border-radius: 10px; border-left: 4px solid #9c27b0;">
+                        <h4 style="color: #4a148c; margin-bottom: 10px;">🔒 Security & Access</h4>
+                        <ul style="color: #6a1b9a; list-style: none; padding: 0;">
+                            <li>• Role-based permissions system</li>
+                            <li>• Field-level security for sensitive data</li>
+                            <li>• Audit trails for compliance</li>
+                            <li>• Data encryption and backup</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p>Understanding these fundamentals will help you maintain clean, accurate data that drives better business decisions and improved customer relationships.</p>
+            </div>
+            <button class="complete-btn" onclick="completeSection(4)">Mark Section Complete</button>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quiz-modal">
+        <div class="quiz-content">
+            <div class="quiz-header">
+                <h2 id="quiz-title">Section Quiz</h2>
+                <p>Answer the following questions to complete this section.</p>
+            </div>
+            <div id="quiz-questions"></div>
+            <div class="quiz-buttons">
+                <button class="quiz-btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="quiz-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div class="certificate-modal" id="certificate-modal">
+        <div class="certificate-content">
+            <div class="certificate">
+                <h2 style="color: #2196f3; margin-bottom: 20px;">🏆 Congratulations!</h2>
+                <h3>Certificate of Completion</h3>
+                <p style="margin: 20px 0;">This certifies that you have successfully completed</p>
+                <h4 style="color: #2c3e50;">System Overview</h4>
+                <p style="margin: 20px 0;">Module: Introduction to Dynamics 365</p>
+                <p style="color: #666;">Completed on: <span id="completion-date"></span></p>
+            </div>
+            <div style="margin-top: 30px;">
+                <button class="quiz-btn" onclick="downloadCertificate()" style="margin-right: 10px;">Download Certificate</button>
+                <button class="quiz-btn" onclick="closeCertificate()">Continue Learning</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedSections = 0;
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        const quizzes = {
+            1: {
+                title: "Platform Overview Quiz",
+                questions: [
+                    {
+                        question: "What does CRM stand for in Dynamics 365?",
+                        options: ["Customer Relationship Management", "Customer Resource Management", "Client Relationship Model", "Customer Revenue Management"],
+                        correct: 0
+                    },
+                    {
+                        question: "Dynamics 365 is a cloud-based platform.",
+                        options: ["True", "False"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which Microsoft product integrates seamlessly with Dynamics 365?",
+                        options: ["Adobe Creative Suite", "Office 365", "Google Workspace", "Salesforce"],
+                        correct: 1
+                    }
+                ]
+            },
+            2: {
+                title: "Core Components Quiz",
+                questions: [
+                    {
+                        question: "How many main components were mentioned in the Core System Components section?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2
+                    },
+                    {
+                        question: "Which component handles campaign management and lead nurturing?",
+                        options: ["Sales Hub", "Analytics", "Marketing", "Customer Service"],
+                        correct: 2
+                    },
+                    {
+                        question: "The Analytics component provides real-time dashboards.",
+                        options: ["True", "False"],
+                        correct: 0
+                    }
+                ]
+            },
+            3: {
+                title: "Navigation & UI Quiz",
+                questions: [
+                    {
+                        question: "What is the first step in the broadcast advertising workflow?",
+                        options: ["Qualification", "Lead Generation", "Proposal Creation", "Negotiation"],
+                        correct: 1
+                    },
+                    {
+                        question: "How many stages are in the typical broadcast advertising workflow?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2
+                    },
+                    {
+                        question: "The mobile interface supports offline capability.",
+                        options: ["True", "False"],
+                        correct: 0
+                    }
+                ]
+            },
+            4: {
+                title: "Data Management Quiz",
+                questions: [
+                    {
+                        question: "Which entity represents potential customers in Dynamics 365?",
+                        options: ["Accounts", "Contacts", "Leads", "Opportunities"],
+                        correct: 2
+                    },
+                    {
+                        question: "Data encryption is included in Dynamics 365 security features.",
+                        options: ["True", "False"],
+                        correct: 0
+                    },
+                    {
+                        question: "What type of permissions system does Dynamics 365 use?",
+                        options: ["User-based", "Role-based", "Group-based", "Time-based"],
+                        correct: 1
+                    }
+                ]
+            }
+        };
+
+        function updateProgress() {
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            
+            progressText.textContent = `${completedSections}/4 Sections Complete`;
+            progressFill.style.width = `${(completedSections / 4) * 100}%`;
+        }
+
+        function completeSection(sectionNumber) {
+            // Start quiz for this section
+            startQuiz(sectionNumber);
+        }
+
+        function startQuiz(sectionNumber) {
+            currentQuiz = quizzes[sectionNumber];
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            
+            document.getElementById('quiz-title').textContent = currentQuiz.title;
+            document.getElementById('quiz-modal').style.display = 'flex';
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            const questionsContainer = document.getElementById('quiz-questions');
+            
+            let optionsHtml = '';
+            question.options.forEach((option, index) => {
+                optionsHtml += `
+                    <li>
+                        <label>
+                            <input type="radio" name="quiz-option" value="${index}" ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                            ${option}
+                        </label>
+                    </li>
+                `;
+            });
+            
+            questionsContainer.innerHTML = `
+                <div class="quiz-question">
+                    Question ${currentQuestionIndex + 1} of ${currentQuiz.questions.length}: ${question.question}
+                </div>
+                <ul class="quiz-options">
+                    ${optionsHtml}
+                </ul>
+            `;
+            
+            updateQuizButtons();
+        }
+
+        function updateQuizButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
+                nextBtn.textContent = 'Submit Quiz';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
+        }
+
+        function nextQuestion() {
+            // Save current answer
+            const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+            }
+            
+            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
+                // Submit quiz
+                submitQuiz();
+            } else {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            let correctAnswers = 0;
+            currentQuiz.questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    correctAnswers++;
+                }
+            });
+            
+            const score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+            const passed = score >= 80;
+            
+            if (passed) {
+                // Mark section as completed
+                const sectionNumber = Object.keys(quizzes).find(key => quizzes[key] === currentQuiz);
+                markSectionCompleted(parseInt(sectionNumber));
+                
+                document.getElementById('quiz-modal').style.display = 'none';
+                
+                // Check if all sections are completed
+                if (completedSections === 4) {
+                    showCertificate();
+                }
+            } else {
+                alert(`You scored ${score}%. You need 80% or higher to pass. Please review the material and try again.`);
+                document.getElementById('quiz-modal').style.display = 'none';
+            }
+        }
+
+        function markSectionCompleted(sectionNumber) {
+            const section = document.getElementById(`section-${sectionNumber}`);
+            section.classList.add('completed');
+            
+            const button = section.querySelector('.complete-btn');
+            button.textContent = 'Section Completed ✓';
+            button.disabled = true;
+            
+            completedSections++;
+            updateProgress();
+        }
+
+        function showCertificate() {
+            document.getElementById('completion-date').textContent = new Date().toLocaleDateString();
+            document.getElementById('certificate-modal').style.display = 'flex';
+        }
+
+        function downloadCertificate() {
+            // In a real implementation, this would generate and download a PDF
+            alert('Certificate download functionality would be implemented here.');
+        }
+
+        function closeCertificate() {
+            document.getElementById('certificate-modal').style.display = 'none';
+        }
+
+        // Initialize progress on page load
+        updateProgress();
+    </script>
+</body>
+</html>
+
