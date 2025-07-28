@@ -15,17 +15,19 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             color: white;
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
 
         .header-content {
@@ -38,16 +40,667 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .auth-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         .auth-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 500;
+        }
+
+        .auth-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .auth-btn.primary {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border-color: #4caf50;
+        }
+
+        .auth-btn.primary:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .modules-section {
+            background: white;
+            border-radius: 30px 30px 0 0;
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+            padding: 60px 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .module-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .module-description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .lessons-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .lessons-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .lessons-list li::before {
+            content: "📚";
+            position: absolute;
+            left: 0;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .module-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .module-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .module-btn.quiz {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+        }
+
+        .module-btn.quiz:hover {
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+        }
+
+        .enhanced-lessons {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 5px solid #4caf50;
+        }
+
+        .enhanced-title {
+            color: #2e7d32;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .enhanced-title::before {
+            content: "✨";
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .enhanced-description {
+            color: #388e3c;
+            margin-bottom: 20px;
+        }
+
+        .enhanced-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .enhanced-link {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .enhanced-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .enhanced-link::before {
+            content: "🚀";
+            margin-right: 8px;
+        }
+
+        .features-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 60px 0;
+            margin-top: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .user-welcome {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .enhanced-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Dynamics 365 Training</div>
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="#" class="auth-btn" onclick="showLogin()">Login to Continue</a>
+                <a href="#" class="auth-btn primary" onclick="startTraining()">Start Free Training</a>
+            </div>
+            <div class="user-welcome" id="user-welcome">
+                Welcome back! Continue your training journey.
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Master Dynamics 365 for Broadcast Advertising</h1>
+            <p class="hero-subtitle">Transform your sales process with Microsoft's powerful CRM platform. Learn to leverage advanced features, integrate with your existing workflow, and drive better results for your broadcast advertising business.</p>
+            <div class="hero-cta">
+                <a href="#modules" class="cta-btn">Start Learning Now</a>
+                <a href="#features" class="cta-btn secondary">Explore Features</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="modules-section" id="modules">
+        <div class="container">
+            <h2 class="section-title">Training Modules</h2>
+            
+            <div class="enhanced-lessons">
+                <div class="enhanced-title">Enhanced Interactive Lessons</div>
+                <div class="enhanced-description">Experience our new interactive lessons with section-based quizzes, progress tracking, and completion certificates!</div>
+                <div class="enhanced-links">
+                    <a href="lesson-welcome-enhanced.html" class="enhanced-link">Welcome to Dynamics 365</a>
+                    <a href="lesson-system-overview-enhanced.html" class="enhanced-link">System Overview</a>
+                    <a href="lesson-lead-capture-enhanced.html" class="enhanced-link">Lead Capture</a>
+                </div>
+            </div>
+
+            <div class="modules-grid">
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🚀</div>
+                        <div class="module-title">Module 1: Introduction to Dynamics 365</div>
+                    </div>
+                    <div class="module-description">
+                        Discover the power of Microsoft Dynamics 365 and how it revolutionizes broadcast advertising sales.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Welcome to Dynamics 365</li>
+                        <li>Lesson 2: System Overview</li>
+                        <li>Lesson 3: Getting Started</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="lesson-welcome-enhanced.html" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">⚙️</div>
+                        <div class="module-title">Module 2: Personalizing Your Workspace</div>
+                    </div>
+                    <div class="module-description">
+                        Learn to customize Dynamics 365 to match your workflow and maximize productivity.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Dashboard Customization</li>
+                        <li>Lesson 2: Views and Filters</li>
+                        <li>Lesson 3: Personal Settings</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🎯</div>
+                        <div class="module-title">Module 3: Lead Management Mastery</div>
+                    </div>
+                    <div class="module-description">
+                        Master the art of capturing, qualifying, and converting leads in the broadcast advertising industry.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Lead Capture</li>
+                        <li>Lesson 2: Lead Qualification</li>
+                        <li>Lesson 3: Lead Conversion</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="lesson-lead-capture-enhanced.html" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">💼</div>
+                        <div class="module-title">Module 4: Managing Opportunities</div>
+                    </div>
+                    <div class="module-description">
+                        Learn to track and manage sales opportunities from initial contact to closed deals.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Creating Opportunities</li>
+                        <li>Lesson 2: Opportunity Stages</li>
+                        <li>Lesson 3: Pipeline Management</li>
+                        <li>Lesson 4: Forecasting</li>
+                        <li>Lesson 5: Closing Deals</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🔗</div>
+                        <div class="module-title">Module 5: Microsoft Integration</div>
+                    </div>
+                    <div class="module-description">
+                        Discover how Dynamics 365 integrates seamlessly with Microsoft Office and other tools.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Outlook Integration</li>
+                        <li>Lesson 2: Teams Collaboration</li>
+                        <li>Lesson 3: Power BI Reports</li>
+                        <li>Lesson 4: Excel Integration</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🏆</div>
+                        <div class="module-title">Module 6: Capstone Scenario</div>
+                    </div>
+                    <div class="module-description">
+                        Apply everything you've learned in a comprehensive real-world broadcast advertising scenario.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Capstone: Multi-Market Campaign</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Our Training?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <div class="feature-title">Interactive Quizzes</div>
+                    <div class="feature-desc">Test your knowledge with section-based quizzes and immediate feedback</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <div class="feature-title">Completion Certificates</div>
+                    <div class="feature-desc">Earn professional certificates to showcase your Dynamics 365 expertise</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Progress Tracking</div>
+                    <div class="feature-desc">Monitor your learning progress with visual indicators and milestones</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Mobile Friendly</div>
+                    <div class="feature-desc">Learn anywhere, anytime with our responsive mobile-optimized platform</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Industry Focused</div>
+                    <div class="feature-desc">Specifically designed for broadcast advertising professionals</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Self-Paced</div>
+                    <div class="feature-desc">Learn at your own speed with 24/7 access to all materials</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Dynamics 365 Training for Broadcast Advertising. All rights reserved.</p>
+            <p>Transform your sales process with Microsoft's powerful CRM platform.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in (simple demo logic)
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+            const authButtons = document.getElementById('auth-buttons');
+            const userWelcome = document.getElementById('user-welcome');
+            
+            if (isLoggedIn) {
+                authButtons.style.display = 'none';
+                userWelcome.style.display = 'block';
+            } else {
+                authButtons.style.display = 'flex';
+                userWelcome.style.display = 'none';
+            }
+        }
+
+        function showLogin() {
+            // Simple demo login
+            localStorage.setItem('userLoggedIn', 'true');
+            checkLoginStatus();
+            alert('Welcome! You are now logged in.');
+        }
+
+        function startTraining() {
+            // Simple demo login for free training
+            localStorage.setItem('userLoggedIn', 'true');
+            checkLoginStatus();
+            document.getElementById('modules').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Check login status on page load
+        checkLoginStatus();
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all module cards
+        document.querySelectorAll('.module-card, .feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
             padding: 8px 16px;
             border: 2px solid white;
             background: transparent;
